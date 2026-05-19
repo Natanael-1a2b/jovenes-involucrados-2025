@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jóvenes Involucrados 2025 - Preguntas</title>
+    <meta name="description" content="App de preguntas y respuestas para Jóvenes Involucrados 2025 - IBCJ">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#0a0a1a">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Category Selection Screen -->
+    <div id="screen-categories" class="screen active">
+        <div class="top-nav">
+            <button id="btn-repaso" class="btn-nav">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+                <span>Repaso</span>
+            </button>
+            <button id="btn-install" class="btn-nav btn-nav--highlight hidden">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+                <span>Instalar</span>
+            </button>
+        </div>
+        <div class="hero-header">
+            <div class="hero-glow"></div>
+            <h1 class="hero-title">Jóvenes Involucrados</h1>
+            <p class="hero-subtitle">2025 — Preguntas y Respuestas</p>
+            <div class="streak-badge" id="streak-badge">
+                <span class="streak-fire">🔥</span>
+                <span class="streak-count" id="streak-count">0</span>
+                <span class="streak-label">días</span>
+            </div>
+        </div>
+        <div class="categories-grid">
+            <button class="category-card" data-category="hora_silenciosa" id="btn-hora-silenciosa">
+                <div class="card-icon">📖</div>
+                <div class="card-title">Hora Silenciosa</div>
+                <div class="card-count" id="count-hora_silenciosa">0 preguntas</div>
+                <div class="card-progress"><div class="card-progress-fill" id="prog-hora_silenciosa"></div></div>
+                <div class="card-shine"></div>
+            </button>
+            <button class="category-card" data-category="discipulado" id="btn-discipulado">
+                <div class="card-icon">✝️</div>
+                <div class="card-title">Discipulado</div>
+                <div class="card-count" id="count-discipulado">0 preguntas</div>
+                <div class="card-progress"><div class="card-progress-fill" id="prog-discipulado"></div></div>
+                <div class="card-shine"></div>
+            </button>
+            <button class="category-card" data-category="versiculos" id="btn-versiculos">
+                <div class="card-icon">📜</div>
+                <div class="card-title">Versículos</div>
+                <div class="card-count" id="count-versiculos">0 preguntas</div>
+                <div class="card-progress"><div class="card-progress-fill" id="prog-versiculos"></div></div>
+                <div class="card-shine"></div>
+            </button>
+            <button class="category-card" data-category="lecciones" id="btn-lecciones">
+                <div class="card-icon">📚</div>
+                <div class="card-title">Lecciones</div>
+                <div class="card-count" id="count-lecciones">0 preguntas</div>
+                <div class="card-progress"><div class="card-progress-fill" id="prog-lecciones"></div></div>
+                <div class="card-shine"></div>
+            </button>
+            <button class="category-card category-card--all" data-category="todas" id="btn-todas">
+                <div class="card-icon">🔀</div>
+                <div class="card-title">Todas las Categorías</div>
+                <div class="card-count" id="count-todas">0 preguntas</div>
+                <div class="card-progress"><div class="card-progress-fill" id="prog-todas"></div></div>
+                <div class="card-shine"></div>
+            </button>
+        </div>
+    </div>
+
+    <!-- Quiz Screen -->
+    <div id="screen-quiz" class="screen">
+        <div class="quiz-header">
+            <button id="btn-back" class="btn-icon" aria-label="Volver">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg>
+            </button>
+            <div class="quiz-header-info">
+                <h2 id="quiz-category-title" class="quiz-cat-title"></h2>
+                <div class="progress-text"><span id="quiz-current">1</span> / <span id="quiz-total">0</span></div>
+            </div>
+            <button id="btn-restart" class="btn-icon" aria-label="Reiniciar" title="Reiniciar">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
+            </button>
+        </div>
+
+        <div class="progress-bar-container">
+            <div id="progress-bar" class="progress-bar"></div>
+        </div>
+
+        <div class="quiz-body">
+            <div id="question-card" class="question-card">
+                <div class="question-meta" id="question-meta"></div>
+                <p class="question-text" id="question-text"></p>
+            </div>
+            <div id="answer-section" class="answer-section hidden">
+                <div class="answer-card">
+                    <div class="answer-label">Respuesta</div>
+                    <p class="answer-text" id="answer-text"></p>
+                </div>
+            </div>
+        </div>
+
+        <div class="quiz-actions">
+            <button id="btn-reveal" class="btn-primary">
+                <span>Ver Respuesta</span>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+            </button>
+            <div id="action-score" class="action-row hidden">
+                <button id="btn-wrong" class="btn-score btn-score--wrong">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                    <span>No lo sabía</span>
+                </button>
+                <button id="btn-correct" class="btn-score btn-score--correct">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                    <span>Lo sabía</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Complete Screen -->
+    <div id="screen-complete" class="screen">
+        <canvas id="confetti-canvas"></canvas>
+        <div class="complete-content">
+            <div class="complete-icon">🎉</div>
+            <h2 class="complete-title">¡Completado!</h2>
+            <div class="score-ring-container">
+                <svg class="score-ring" viewBox="0 0 120 120">
+                    <circle class="score-ring-bg" cx="60" cy="60" r="52" />
+                    <circle class="score-ring-fill" id="score-ring-fill" cx="60" cy="60" r="52" />
+                </svg>
+                <div class="score-ring-text">
+                    <div class="score-ring-pct" id="score-pct">0%</div>
+                </div>
+            </div>
+            <div class="score-detail" id="score-detail">0 / 0 correctas</div>
+            <p class="complete-text">Has respondido todas las preguntas de esta categoría.</p>
+            <div class="complete-actions">
+                <button id="btn-replay" class="btn-primary">Repetir Categoría</button>
+                <button id="btn-home" class="btn-secondary">Elegir Otra Categoría</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Review Screen -->
+    <div id="screen-repaso" class="screen">
+        <div class="quiz-header">
+            <button id="btn-back-repaso" class="btn-icon" aria-label="Volver">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg>
+            </button>
+            <div class="quiz-header-info">
+                <h2 class="quiz-cat-title">Modo Repaso</h2>
+            </div>
+            <div style="width: 44px;"></div>
+        </div>
+        <div class="repaso-search-container">
+            <div class="search-box">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+                <input type="search" id="repaso-search" placeholder="Buscar por palabra clave, lección...">
+            </div>
+        </div>
+        <div class="repaso-list" id="repaso-list">
+            <!-- Populated by JS -->
+        </div>
+    </div>
+
+    <script src="questions.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
