@@ -1,8 +1,8 @@
-# Jóvenes Involucrados 2025 - App de Preguntas y Respuestas
+# Jóvenes Involucrados 2026 - App de Preguntas y Respuestas
 
 ![Banner](https://img.shields.io/badge/Estado-Producci%C3%B3n-success?style=for-the-badge) ![Versión](https://img.shields.io/badge/Versi%C3%B3n-1.0.0-blue?style=for-the-badge) ![PWA](https://img.shields.io/badge/PWA-Ready-f59e0b?style=for-the-badge)
 
-Una **Progressive Web App (PWA)** diseñada para que los jóvenes de la Iglesia Bautista Cristo Jesús (IBCJ) puedan estudiar y repasar las preguntas del retiro "Jóvenes Involucrados 2025" de forma interactiva y desde cualquier dispositivo.
+Una **Progressive Web App (PWA)** diseñada para que los jóvenes de la Iglesia Bautista Cristo Jesús (IBCJ) puedan estudiar y repasar las preguntas del retiro "Jóvenes Involucrados 2026" de forma interactiva y desde cualquier dispositivo.
 
 ## 🚀 Características Principales
 

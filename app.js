@@ -58,8 +58,8 @@
   }
 
   function updateStreak() {
-    const lastVisit = localStorage.getItem('ji2025_last_visit');
-    let streak = parseInt(localStorage.getItem('ji2025_streak') || '0');
+    const lastVisit = localStorage.getItem('ji2026_last_visit');
+    let streak = parseInt(localStorage.getItem('ji2026_streak') || '0');
     const todayStr = new Date().toDateString();
     
     if (lastVisit !== todayStr) {
@@ -74,8 +74,8 @@
       } else {
         streak = 1;
       }
-      localStorage.setItem('ji2025_last_visit', todayStr);
-      localStorage.setItem('ji2025_streak', streak);
+      localStorage.setItem('ji2026_last_visit', todayStr);
+      localStorage.setItem('ji2026_streak', streak);
     }
     
     const badge = $('streak-badge');
@@ -105,17 +105,17 @@
 
   function saveProgress() {
     if (!currentCategory) return;
-    localStorage.setItem('ji2025_state_' + currentCategory, JSON.stringify(state));
+    localStorage.setItem('ji2026_state_' + currentCategory, JSON.stringify(state));
     updateProgressUI(currentCategory, state.shuffled.length);
   }
 
   function loadProgress(cat) {
-    const saved = localStorage.getItem('ji2025_state_' + cat);
+    const saved = localStorage.getItem('ji2026_state_' + cat);
     return saved ? JSON.parse(saved) : null;
   }
 
   function clearProgress(cat) {
-    localStorage.removeItem('ji2025_state_' + cat);
+    localStorage.removeItem('ji2026_state_' + cat);
     updateProgressUI(cat, 0);
   }
 
