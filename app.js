@@ -1,7 +1,7 @@
 (() => {
   const $ = id => document.getElementById(id);
   const screens = { categories: $('screen-categories'), quiz: $('screen-quiz'), complete: $('screen-complete'), repaso: $('screen-repaso') };
-  const CATEGORY_NAMES = { hora_silenciosa: 'Hora Silenciosa', discipulado: 'Discipulado', versiculos: 'Versículos', lecciones: 'Lecciones', todas: 'Todas las Categorías' };
+  const CATEGORY_NAMES = { hora_silenciosa: 'Hora Silenciosa', discipulado: 'Disipulado', versiculos: 'Versículos', lecciones: 'Lecciones', todas: 'Todas las Categorías' };
 
   let currentCategory = '';
   let state = {

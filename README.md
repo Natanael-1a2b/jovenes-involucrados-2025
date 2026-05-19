@@ -17,7 +17,7 @@ Una **Progressive Web App (PWA)** diseñada para que los jóvenes de la Iglesia 
 
 La base de datos contiene un total de 152 preguntas divididas en:
 *   📖 **Hora Silenciosa** (28 preguntas)
-*   ✝️ **Discipulado** (50 preguntas)
+*   ✝️ **Disipulado** (50 preguntas)
 *   📜 **Versículos** (14 preguntas)
 *   📚 **Lecciones** (60 preguntas)
 
