@@ -9,8 +9,8 @@ const QUESTIONS = {
     },
     {
       "num": 2,
-      "q": "¿Menciona 5 declaraciones sobre la bondad de Dios que encontramos en los?",
-      "a": "salmos?  La bondad de Dios es continua.  Dios es bueno y hace el bien.  La bondad de Dios es grande, especialmente para los que confían en Él.  Dios es bueno con todos.  Debemos alabar al Señor porque Él es bueno.",
+      "q": "¿Menciona 5 declaraciones sobre la bondad de Dios que encontramos en los salmos?",
+      "a": "La bondad de Dios es continua.  Dios es bueno y hace el bien.  La bondad de Dios es grande, especialmente para los que confían en Él.  Dios es bueno con todos.  Debemos alabar al Señor porque Él es bueno.",
       "carpeta": "Así es Él. Dios es más de lo que piensas",
       "leccion": "Dios no es cruel"
     },
@@ -219,8 +219,8 @@ const QUESTIONS = {
     },
     {
       "num": 33,
-      "q": "Menciona tres razones por las que los creyentes podemos saber que somos libres?",
-      "a": "del pecado con su cita bíblica  Somos libres por la gracia de Dios (Romanos 6:1-4).  Somos libres por la resurrección de Cristo (Romanos 6:5-7, 11).  Somos libres gracias al poder del Espíritu Santo (Romanos 6:12-14).",
+      "q": "Menciona tres razones por las que los creyentes podemos saber que somos libres del pecado con su cita bíblica?",
+      "a": "Somos libres por la gracia de Dios (Romanos 6:1-4).  Somos libres por la resurrección de Cristo (Romanos 6:5-7, 11).  Somos libres gracias al poder del Espíritu Santo (Romanos 6:12-14).",
       "carpeta": "Fuga de prisión. Libérate del pecado",
       "leccion": "Liberados por el perdón"
     },
@@ -480,7 +480,7 @@ const QUESTIONS = {
     },
     {
       "num": 9,
-      "q": "Mencione ¿Cuáles son los 3 puntos por los cuales tengo Seguridad de?",
+      "q": "Mencione ¿Cuáles son los 3 puntos por los cuales tengo Seguridad de Salvación?",
       "a": "*La salvación es un regalo de Dios. *Porque la salvación no depende de mí sino de la obra que Cristo hizo por mí. *Porque mi salvación y seguridad en Cristo están basadas en la Palabra de Dios.",
       "leccion_num": "3",
       "leccion_titulo": "SEGURIDAD DE SALVACIÓN."
@@ -508,14 +508,14 @@ const QUESTIONS = {
     },
     {
       "num": 13,
-      "q": "Según el punto “escoja malos amigos”, ¿Qué versículo me dice que al?",
+      "q": "Según el punto “escoja malos amigos”, ¿Qué versículo me dice que al hacerme amigo del mundo me constituyo enemigo de Dios?",
       "a": "Santiago 4:4",
       "leccion_num": "4",
       "leccion_titulo": "GIGANTES O ENANOS."
     },
     {
       "num": 14,
-      "q": "Dime 4 de los 6 puntos que Impiden el Desarrollo de mi Crecimiento?",
+      "q": "Dime 4 de los 6 puntos que Impiden el Desarrollo de mi Crecimiento Espiritual?",
       "a": "No haciendo caso del Pecado en mi vida, alimentando mis Apetitos Físicos, siendo Materialista, Buscando Popularidad, escogiendo malas Amistades y teniendo malas Actitudes.",
       "leccion_num": "4",
       "leccion_titulo": "GIGANTES O ENANOS."
@@ -529,7 +529,7 @@ const QUESTIONS = {
     },
     {
       "num": 16,
-      "q": "¿Cuáles son las dos partes de la hora silenciosa diaria? Según Salmos?",
+      "q": "¿Cuáles son las dos partes de la hora silenciosa diaria? Según Salmos 143:8b?",
       "a": "Dios me habla a mí a través de su palabra y yo hablo con El por medio de la oración.",
       "leccion_num": "5",
       "leccion_titulo": "LA HORA SILENCIOSA"
@@ -543,7 +543,7 @@ const QUESTIONS = {
     },
     {
       "num": 18,
-      "q": "Según Salmos 5:3 ¿En qué momento del día el salmista se presenta ante?",
+      "q": "Según Salmos 5:3 ¿En qué momento del día el salmista se presenta ante Dios?",
       "a": "De mañana",
       "leccion_num": "5",
       "leccion_titulo": "LA HORA SILENCIOSA"
@@ -585,21 +585,21 @@ const QUESTIONS = {
     },
     {
       "num": 24,
-      "q": "Diga ¿Qué?",
+      "q": "Diga ¿Qué es la iglesia local?",
       "a": "Es el lugar que Dios usa para su propósito acá en la tierra.",
       "leccion_num": "7",
       "leccion_titulo": "YO... ¿ASISTIR A UNA IGLESIA?"
     },
     {
       "num": 25,
-      "q": "Nombra los 3 primeros puntos que el creyente debe saber de por qué?",
+      "q": "Nombra los 3 primeros puntos que el creyente debe saber de por qué asistir a una Iglesia?",
       "a": "* Para Crecer Espiritualmente. * Para tener Comunión con otros creyentes. * Para Trabajar para Cristo.",
       "leccion_num": "7",
       "leccion_titulo": "YO... ¿ASISTIR A UNA IGLESIA?"
     },
     {
       "num": 26,
-      "q": "Nombrar los últimos 3 puntos de la lección de por qué asistir a una?",
+      "q": "Nombrar los últimos 3 puntos de la lección de por qué asistir a una Iglesia?",
       "a": "* Para Testificar a otros de Cristo * Para Ofrendar a la Iglesia * Para Involucrarme en la Obra Misionera",
       "leccion_num": "7",
       "leccion_titulo": "YO... ¿ASISTIR A UNA IGLESIA?"
@@ -711,14 +711,14 @@ const QUESTIONS = {
     },
     {
       "num": 42,
-      "q": "Nombra las primeras 5 preguntas que podemos hacernos cuando no?",
+      "q": "Nombra las primeras 5 preguntas que podemos hacernos cuando no sabemos si algo es correcto o no?",
       "a": "* ¿Es una Práctica Prohibida a los creyentes de hoy por el Señor? * ¿Hay alguna Gloria para Dios en esa actividad? * ¿Se trata de alguna Practica del Mundo? * ¿Haría esto Jesús si estuviera en mi lugar? * ¿Me gustaría ser encontrado haciendo tal cosa cuando el Señor venga?",
       "leccion_num": "11",
       "leccion_titulo": "¿SERA CORRECTO?"
     },
     {
       "num": 43,
-      "q": "Nombra las ultimas 5 preguntas que podemos hacernos cuando no?",
+      "q": "Nombra las ultimas 5 preguntas que podemos hacernos cuando no sabemos si algo es correcto o no?",
       "a": "* ¿Siento deseo de hacer tal cosa cuando me acuerdo que el Espíritu Santo mora en mí? • ¿Es una Conducta Correcta para un Hijo de Dios? • ¿Puede esa actividad convertirse en un Hábito? • ¿Seré de Tropiezo a alguien con mi Conducta? • ¿Existe Duda en mi Mente?",
       "leccion_num": "12",
       "leccion_titulo": "PUREZA SEXUAL"
@@ -732,7 +732,7 @@ const QUESTIONS = {
     },
     {
       "num": 45,
-      "q": "¿Qué implica la Pureza Sexual en una persona soltera y en una persona?",
+      "q": "¿Qué implica la Pureza Sexual en una persona soltera y en una persona casada?",
       "a": "Para una persona soltera incluye no tener relaciones sexuales antes del matrimonio. Para una persona casada significa ser completamente Fiel a su conyugue en pensamientos y acciones.",
       "leccion_num": "12",
       "leccion_titulo": "PUREZA SEXUAL"
@@ -760,14 +760,14 @@ const QUESTIONS = {
     },
     {
       "num": 49,
-      "q": "Nombra por lo menos 4 pasos que te ayudaran a descubrir la Voluntad?",
+      "q": "Nombra por lo menos 4 pasos que te ayudaran a descubrir la Voluntad de Dios Especifica?",
       "a": "Asegurarme que estoy Dispuesto a hacer la Voluntad de Dios, recurrir a la Palabra, Orar, Esperar en el Señor, buscar Consejo, no guiarme por mis Sentimientos, usar la guía del Espíritu Santo.",
       "leccion_num": "14",
       "leccion_titulo": "APROVECHANDO MEJOR LA BIBLIA."
     },
     {
       "num": 50,
-      "q": "Para estudiar la Biblia debemos tomar en cuenta 3 principios ¿Cuáles?",
+      "q": "Para estudiar la Biblia debemos tomar en cuenta 3 principios ¿Cuáles son?",
       "a": "1. Principio de Exactitud. 2. Principio de Contexto. 3. Principio de Buen Juicio.",
       "leccion_num": "",
       "leccion_titulo": ""
@@ -796,12 +796,12 @@ const QUESTIONS = {
     },
     {
       "num": 6,
-      "q": "Cuál debe ser la actitud de un cristiano ante la vida y la muerte según Pablo en?",
+      "q": "Cuál debe ser la actitud de un cristiano ante la vida y la muerte según Pablo en Filipenses 1:21?",
       "a": "La actitud de Vivir para Cristo mientras estamos en esta vida, teniendo el propósito de glorificarle y la de no temer la muerte, ya que morir no es una pérdida, sino la ganancia de irnos con El."
     },
     {
       "num": 7,
-      "q": "Qué exhortación hace Pablo sobre la unidad y la humildad en la iglesia según?",
+      "q": "Qué exhortación hace Pablo sobre la unidad y la humildad en la iglesia según Filipenses 2:3-5?",
       "a": "Pablo llama a los creyentes a tener el mismo amor, un mismo sentir y un mismo propósito en Cristo. Evitar la rivalidad y el orgullo y considerar a los demás como superiores a uno mismo. Pone de Ejemplo a Cristo."
     },
     {
@@ -836,7 +836,7 @@ const QUESTIONS = {
     },
     {
       "num": 14,
-      "q": "Como se le llama a Hebreos 11 y cuáles son algunos ejemplos de personas que?",
+      "q": "Como se le llama a Hebreos 11 y cuáles son algunos ejemplos de personas que vivieron por fe según este capítulo?",
       "a": "Hebreos 11 es comúnmente llamado la Galería de la Fe. Tenemos el ejemplo de hombres y mujeres que confiaron en Dios a pesar de las dificultades y fueron ejemplos de perseverancia en la fe, como Abel, Enoc, Noé, Abraham, Sara, Isaac, Jacob, José, Moisés y Rahab."
     },
     {
@@ -846,7 +846,7 @@ const QUESTIONS = {
     },
     {
       "num": 17,
-      "q": "¿Por qué los israelitas tenían que marcar los dinteles de sus casas con sangre en la?",
+      "q": "¿Por qué los israelitas tenían que marcar los dinteles de sus casas con sangre en la Pascua?",
       "a": "Los israelitas debían marcar los dinteles de sus casas con sangre en la primera Pascua como una señal de obediencia a Dios y para ser librados de la décima plaga: la muerte de los primogénitos. La sangre del cordero actuaba como una señal de salvación para los israelitas."
     },
     {
