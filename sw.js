@@ -1,6 +1,6 @@
-const CACHE_NAME = 'ji2026-v3';
+const CACHE_NAME = 'ji2026-v4';
 const STATIC_ASSETS = [
-  './',
+  '/',
   './index.html',
   './styles.css',
   './app.js',
