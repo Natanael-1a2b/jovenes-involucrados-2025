@@ -274,6 +274,24 @@ body {
 }
 .search-box input::placeholder { color: rgba(255,255,255,.3); }
 
+.repaso-tabs {
+  display: flex; gap: 0.5rem; margin-top: 1rem; overflow-x: auto;
+  padding-bottom: 0.5rem; scrollbar-width: none;
+}
+.repaso-tabs::-webkit-scrollbar { display: none; }
+.repaso-tab {
+  padding: 0.5rem 1rem; border-radius: 2rem; white-space: nowrap;
+  background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.1);
+  color: #fff; font-family: inherit; font-size: 0.85rem; font-weight: 600;
+  cursor: pointer; transition: all 0.2s;
+}
+.repaso-tab:hover { background: rgba(255,255,255,.1); }
+.repaso-tab.active {
+  background: linear-gradient(135deg, #7c3aed, #6366f1);
+  border-color: rgba(139,92,246,.5);
+  box-shadow: 0 4px 15px rgba(99,102,241,.3);
+}
+
 .repaso-list {
   flex: 1; overflow-y: auto; padding: 0 1.25rem 2rem;
   display: flex; flex-direction: column; gap: .75rem;

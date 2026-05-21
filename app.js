@@ -302,12 +302,40 @@
 
   // REPASO MODE
   let allRepasoQuestions = [];
+  let currentRepasoCategory = 'todas';
+
   function initRepaso() {
     allRepasoQuestions = [];
     Object.keys(QUESTIONS).forEach(k => {
       QUESTIONS[k].forEach(q => allRepasoQuestions.push({ ...q, _srcCat: k }));
     });
-    renderRepaso(allRepasoQuestions);
+    
+    const tabsContainer = $('repaso-tabs');
+    if (tabsContainer) {
+      tabsContainer.innerHTML = '';
+      const catKeys = ['todas', ...Object.keys(QUESTIONS)];
+      catKeys.forEach(k => {
+        const btn = document.createElement('button');
+        btn.className = `repaso-tab ${k === currentRepasoCategory ? 'active' : ''}`;
+        btn.textContent = CATEGORY_NAMES[k] || k;
+        btn.addEventListener('click', () => {
+          currentRepasoCategory = k;
+          document.querySelectorAll('.repaso-tab').forEach(t => t.classList.remove('active'));
+          btn.classList.add('active');
+          filterRepaso();
+        });
+        tabsContainer.appendChild(btn);
+      });
+    }
+
+    $('repaso-search').value = '';
+    currentRepasoCategory = 'todas';
+    if (tabsContainer) {
+       document.querySelectorAll('.repaso-tab').forEach(t => t.classList.remove('active'));
+       if (tabsContainer.firstChild) tabsContainer.firstChild.classList.add('active');
+    }
+    
+    filterRepaso();
   }
 
   function renderRepaso(questions) {
@@ -346,20 +374,26 @@
     });
   }
 
-  $('repaso-search').addEventListener('input', (e) => {
-    const term = e.target.value.toLowerCase();
-    if (!term) {
-      renderRepaso(allRepasoQuestions);
-      return;
+  function filterRepaso() {
+    const term = $('repaso-search').value.toLowerCase();
+    let filtered = allRepasoQuestions;
+    
+    if (currentRepasoCategory !== 'todas') {
+      filtered = filtered.filter(q => q._srcCat === currentRepasoCategory);
     }
-    const filtered = allRepasoQuestions.filter(q => 
-      q.q.toLowerCase().includes(term) || 
-      q.a.toLowerCase().includes(term) ||
-      (q.leccion && q.leccion.toLowerCase().includes(term)) ||
-      (q.leccion_titulo && q.leccion_titulo.toLowerCase().includes(term))
-    );
+    
+    if (term) {
+      filtered = filtered.filter(q => 
+        q.q.toLowerCase().includes(term) || 
+        q.a.toLowerCase().includes(term) ||
+        (q.leccion && q.leccion.toLowerCase().includes(term)) ||
+        (q.leccion_titulo && q.leccion_titulo.toLowerCase().includes(term))
+      );
+    }
     renderRepaso(filtered);
-  });
+  }
+
+  $('repaso-search').addEventListener('input', filterRepaso);
 
   // Events
   document.querySelectorAll('.category-card').forEach(btn => {
