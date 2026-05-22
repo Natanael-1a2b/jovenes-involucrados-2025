@@ -281,6 +281,7 @@
     if (saved && !forceRestart) {
       if (saved.shuffled && saved.shuffled.length === expectedLength) {
         state = saved;
+        if (!state.answers) state.answers = [];
       } else {
         forceRestart = true; // Invalidate stale state
       }
