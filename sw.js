@@ -1,4 +1,4 @@
-const CACHE_NAME = 'ji2026-v23';
+const CACHE_NAME = 'ji2026-v24';
 const STATIC_ASSETS = [
   '/',
   './index.html',
@@ -15,7 +15,10 @@ const STATIC_ASSETS = [
 self.addEventListener('install', (event) => {
   event.waitUntil(
     caches.open(CACHE_NAME)
-      .then((cache) => cache.addAll(STATIC_ASSETS))
+      .then((cache) => {
+        const requests = STATIC_ASSETS.map(url => new Request(url, { cache: 'no-cache' }));
+        return cache.addAll(requests);
+      })
       .then(() => self.skipWaiting())
   );
 });

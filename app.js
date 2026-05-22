@@ -275,7 +275,7 @@
     if (cat === 'todas') {
       Object.keys(QUESTIONS).forEach(k => { expectedLength += QUESTIONS[k].length; });
     } else {
-      expectedLength = QUESTIONS[cat].length;
+      expectedLength = (QUESTIONS[cat] || []).length;
     }
 
     if (saved && !forceRestart) {
@@ -293,7 +293,7 @@
           QUESTIONS[k].forEach(q => questions.push({ ...q, _srcCat: k }));
         });
       } else {
-        questions = QUESTIONS[cat];
+        questions = QUESTIONS[cat] || [];
       }
       state = {
         shuffled: shuffle(questions),
