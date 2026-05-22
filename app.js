@@ -346,20 +346,25 @@
     window.lastQuestionIndex = state.currentIndex;
     window.lastQuestionCategory = currentCategory;
 
-    $('question-card').style.animation = 'none';
-    $('answer-section').style.animation = 'none';
-    $('review-result').style.animation = 'none';
+    const qCard = $('question-card');
+    const aSec = $('answer-section');
+    const rRes = $('review-result');
+
+    qCard.style.animation = 'none';
+    aSec.style.animation = 'none';
+    rRes.style.animation = 'none';
     
-    requestAnimationFrame(() => { 
-      $('question-card').style.animation = anim; 
-      if (alreadyAnswered) {
-        $('answer-section').style.animation = anim;
-        $('review-result').style.animation = anim;
-      } else {
-        $('answer-section').style.animation = '';
-        $('review-result').style.animation = '';
-      }
-    });
+    // Forzar reflow para reiniciar la animación sin saltos visuales
+    void qCard.offsetWidth;
+    
+    qCard.style.animation = anim; 
+    if (alreadyAnswered) {
+      aSec.style.animation = anim;
+      rRes.style.animation = anim;
+    } else {
+      aSec.style.animation = '';
+      rRes.style.animation = '';
+    }
     
     $('progress-bar').style.width = ((state.currentIndex) / state.shuffled.length) * 100 + '%';
 
@@ -645,24 +650,32 @@
 
   // Touch Swipe navigation
   let touchStartX = 0;
+  let touchStartY = 0;
   let touchEndX = 0;
+  let touchEndY = 0;
 
   screens.quiz.addEventListener('touchstart', e => {
     touchStartX = e.changedTouches[0].screenX;
+    touchStartY = e.changedTouches[0].screenY;
   }, { passive: true });
 
   screens.quiz.addEventListener('touchend', e => {
     touchEndX = e.changedTouches[0].screenX;
+    touchEndY = e.changedTouches[0].screenY;
     handleSwipe();
   }, { passive: true });
 
   function handleSwipe() {
     const swipeThreshold = 50;
-    const diff = touchEndX - touchStartX;
+    const diffX = touchEndX - touchStartX;
+    const diffY = touchEndY - touchStartY;
 
-    if (Math.abs(diff) < swipeThreshold) return; // not a significant swipe
+    // Si el movimiento fue mayormente vertical (scroll), lo ignoramos
+    if (Math.abs(diffY) > Math.abs(diffX)) return;
 
-    if (diff > 0) {
+    if (Math.abs(diffX) < swipeThreshold) return; // not a significant swipe
+
+    if (diffX > 0) {
       // Swiped Right (pulling from left) -> Go Back or "Lo sabía"
       if (!$('action-score').classList.contains('hidden')) {
         $('btn-correct').click();
