@@ -167,7 +167,34 @@
     }
   }
 
+  // Historial para botón físico 'Atrás' en móviles
+  history.replaceState({ screen: 'categories' }, '');
+
+  window.addEventListener('popstate', (e) => {
+    if (!screens.categories.classList.contains('active')) {
+      initCategories();
+      const update = () => {
+        Object.values(screens).forEach(s => s.classList.remove('active'));
+        screens.categories.classList.add('active');
+      };
+      if (document.startViewTransition) { document.startViewTransition(update); } else { update(); }
+    }
+  });
+
+  function goHome() {
+    vibrate(20);
+    if (history.state && history.state.screen !== 'categories') {
+      history.back();
+    } else {
+      initCategories();
+      showScreen('categories');
+    }
+  }
+
   function showScreen(name) {
+    if (name !== 'categories' && screens.categories.classList.contains('active')) {
+      history.pushState({ screen: name }, '');
+    }
     const update = () => {
       Object.values(screens).forEach(s => s.classList.remove('active'));
       screens[name].classList.add('active');
@@ -560,7 +587,7 @@
   $('btn-correct').addEventListener('click', () => handleScore(true));
   $('btn-wrong').addEventListener('click', () => handleScore(false)); 
   
-  $('btn-back').addEventListener('click', () => { vibrate(20); initCategories(); showScreen('categories'); });
+  $('btn-back').addEventListener('click', goHome);
   $('btn-restart').addEventListener('click', () => {
     vibrate(20);
     showConfirmModal('¿Reiniciar Categoría?', 'Se perderá tu progreso actual y volverás a empezar desde cero.', 'Sí, reiniciar', () => {
@@ -614,7 +641,7 @@
       }
     });
   });
-  $('btn-home').addEventListener('click', () => { vibrate(20); initCategories(); showScreen('categories'); });
+  $('btn-home').addEventListener('click', goHome);
   
   $('btn-repaso').addEventListener('click', () => {
     vibrate(20);
@@ -622,7 +649,7 @@
     $('repaso-search').value = '';
     showScreen('repaso');
   });
-  $('btn-back-repaso').addEventListener('click', () => { vibrate(20); showScreen('categories'); });
+  $('btn-back-repaso').addEventListener('click', goHome);
 
   if ($('btn-clear-repaso-home')) {
     $('btn-clear-repaso-home').addEventListener('click', () => {
@@ -696,9 +723,10 @@
         goBack();
       }
     } else {
-      // Swiped Left (pulling from right) -> Reveal, Next, or "No lo sabía"
+      // Swiped Left (pulling from right)
       if (!$('btn-reveal').classList.contains('hidden')) {
-        $('btn-reveal').click();
+        // No hacer nada en la pregunta actual para evitar revelar por accidente
+        return;
       } else if (!$('btn-next-review').classList.contains('hidden')) {
         $('btn-next-review').click();
       } else if (!$('action-score').classList.contains('hidden')) {
