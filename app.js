@@ -242,14 +242,13 @@
   function buildMetaTags(q, category) {
     let html = '';
     const tag = (cls, icon, text) => `<span class="meta-tag meta-tag--${cls}">${icon} ${text}</span>`;
-    const srcCat = q._srcCat || category;
+    const srcCat = q._srcCat || (category === 'repasar_errores' ? 'repasar_errores' : category);
+    
+    // 1. Categoría
+    const catName = CATEGORY_NAMES[srcCat] || 'Repaso';
+    html += tag('carpeta', '🏷️', catName);
 
-    if (category === 'todas' || category === 'repaso') {
-      html += tag('carpeta', '🏷️', CATEGORY_NAMES[srcCat] || srcCat);
-    }
-
-    if (q.num) html += tag('num', '#', `Pregunta ${q.num}`);
-
+    // 2 y 3. Carpeta y Lección / Referencia
     if (srcCat === 'lecciones') {
       if (q.carpeta) html += tag('carpeta', '📂', q.carpeta);
       if (q.leccion) html += tag('leccion', '📝', q.leccion);
@@ -259,9 +258,10 @@
     } else if (srcCat === 'versiculos') {
       if (q.referencia) html += tag('ref', '📖', q.referencia);
       if (q.leccion) html += tag('leccion', '📝', q.leccion);
-    } else if (srcCat === 'hora_silenciosa') {
-      html += tag('leccion', '📖', 'Hora Silenciosa');
     }
+
+    // 4. Número
+    if (q.num) html += tag('num', '#', `Pregunta ${q.num}`);
 
     return html;
   }
