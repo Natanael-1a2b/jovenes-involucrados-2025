@@ -8,7 +8,8 @@
     shuffled: [],
     currentIndex: 0,
     correctCount: 0,
-    incorrectCount: 0
+    incorrectCount: 0,
+    answers: []
   };
 
   let deferredPrompt;
@@ -193,7 +194,8 @@
         shuffled: shuffle(questions),
         currentIndex: 0,
         correctCount: 0,
-        incorrectCount: 0
+        incorrectCount: 0,
+        answers: []
       };
       saveProgress();
     }
@@ -241,19 +243,51 @@
     $('answer-section').classList.add('hidden');
     $('btn-reveal').classList.remove('hidden');
     $('action-score').classList.add('hidden');
+    $('review-result').classList.add('hidden');
+    $('btn-next-review').classList.add('hidden');
+
+    // Check if this question was already answered (review mode)
+    const alreadyAnswered = state.answers[state.currentIndex] !== undefined;
+    if (alreadyAnswered) {
+      const wasCorrect = state.answers[state.currentIndex];
+      $('answer-section').classList.remove('hidden');
+      $('btn-reveal').classList.add('hidden');
+      $('action-score').classList.add('hidden');
+      $('btn-next-review').classList.remove('hidden');
+
+      const resultEl = $('review-result');
+      resultEl.classList.remove('hidden', 'review-result--correct', 'review-result--wrong');
+      resultEl.classList.add(wasCorrect ? 'review-result--correct' : 'review-result--wrong');
+      $('review-result-icon').textContent = wasCorrect ? '✓' : '✗';
+      $('review-result-text').textContent = wasCorrect ? 'Lo sabías' : 'No lo sabías';
+    }
     
     $('question-card').style.animation = 'none';
     requestAnimationFrame(() => { $('question-card').style.animation = ''; });
     
     $('progress-bar').style.width = ((state.currentIndex) / state.shuffled.length) * 100 + '%';
+
+    // Show/hide previous button
+    const btnPrev = $('btn-prev');
+    if (btnPrev) {
+      if (state.currentIndex > 0) btnPrev.classList.remove('hidden');
+      else btnPrev.classList.add('hidden');
+    }
   }
 
   function handleScore(isCorrect) {
     if (isCorrect) state.correctCount++;
     else state.incorrectCount++;
     
+    state.answers.push(isCorrect);
     state.currentIndex++;
     saveProgress();
+    showQuestion();
+  }
+
+  function goBack() {
+    if (state.currentIndex <= 0) return;
+    state.currentIndex--;
     showQuestion();
   }
 
@@ -411,6 +445,11 @@
   
   $('btn-back').addEventListener('click', () => showScreen('categories'));
   $('btn-restart').addEventListener('click', () => startCategory(currentCategory, true));
+  $('btn-prev').addEventListener('click', goBack);
+  $('btn-next-review').addEventListener('click', () => {
+    state.currentIndex++;
+    showQuestion();
+  });
   $('btn-replay').addEventListener('click', () => startCategory(currentCategory, true));
   $('btn-home').addEventListener('click', () => { initCategories(); showScreen('categories'); });
   
@@ -427,10 +466,17 @@
       if (e.code === 'Space' && !$('btn-reveal').classList.contains('hidden')) {
         e.preventDefault();
         $('btn-reveal').click();
+      } else if (e.code === 'Space' && !$('btn-next-review').classList.contains('hidden')) {
+        e.preventDefault();
+        $('btn-next-review').click();
+      } else if (e.code === 'ArrowRight' && !$('btn-next-review').classList.contains('hidden')) {
+        $('btn-next-review').click();
       } else if (e.code === 'ArrowRight' && !$('action-score').classList.contains('hidden')) {
         $('btn-correct').click();
       } else if (e.code === 'ArrowDown' && !$('action-score').classList.contains('hidden')) {
         $('btn-wrong').click();
+      } else if (e.code === 'ArrowLeft' && state.currentIndex > 0) {
+        goBack();
       } else if (e.code === 'Escape') {
         $('btn-back').click();
       }
