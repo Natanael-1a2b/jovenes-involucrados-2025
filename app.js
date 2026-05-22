@@ -338,8 +338,28 @@
       $('review-result-text').textContent = wasCorrect ? 'Lo sabías' : 'No lo sabías';
     }
     
+    let anim = 'slideUp .4s ease';
+    if (typeof window.lastQuestionIndex !== 'undefined' && window.lastQuestionCategory === currentCategory) {
+       if (state.currentIndex > window.lastQuestionIndex) anim = 'slideInRight .35s ease';
+       else if (state.currentIndex < window.lastQuestionIndex) anim = 'slideInLeft .35s ease';
+    }
+    window.lastQuestionIndex = state.currentIndex;
+    window.lastQuestionCategory = currentCategory;
+
     $('question-card').style.animation = 'none';
-    requestAnimationFrame(() => { $('question-card').style.animation = ''; });
+    $('answer-section').style.animation = 'none';
+    $('review-result').style.animation = 'none';
+    
+    requestAnimationFrame(() => { 
+      $('question-card').style.animation = anim; 
+      if (alreadyAnswered) {
+        $('answer-section').style.animation = anim;
+        $('review-result').style.animation = anim;
+      } else {
+        $('answer-section').style.animation = '';
+        $('review-result').style.animation = '';
+      }
+    });
     
     $('progress-bar').style.width = ((state.currentIndex) / state.shuffled.length) * 100 + '%';
 
