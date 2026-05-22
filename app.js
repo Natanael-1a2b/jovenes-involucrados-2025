@@ -64,7 +64,7 @@
       if (k === 'repasar_errores') return;
       const count = QUESTIONS[k].length;
       totalAll += count;
-      const elCount = $('count-' + k.replace('_', '-'));
+      const elCount = $('count-' + k);
       if (elCount) elCount.textContent = count + ' preguntas';
       updateProgressUI(k, count);
     });
@@ -214,7 +214,7 @@
       screens[name].classList.add('active');
     };
     if (document.startViewTransition) {
-      document.startViewTransition(update);
+      document.startViewTransition(update).ready.catch(() => {});
     } else {
       update();
     }
