@@ -1,4 +1,4 @@
-const CACHE_NAME = 'ji2026-v25';
+const CACHE_NAME = 'ji2026-v26';
 const STATIC_ASSETS = [
   '/',
   './index.html',
