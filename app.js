@@ -1,7 +1,7 @@
 (() => {
   const $ = id => document.getElementById(id);
   const screens = { categories: $('screen-categories'), quiz: $('screen-quiz'), complete: $('screen-complete'), repaso: $('screen-repaso') };
-  const CATEGORY_NAMES = { hora_silenciosa: 'Hora Silenciosa', discipulado: 'Disipulado', versiculos: 'Versículos', lecciones: 'Lecciones', todas: 'Todas las Categorías' };
+  const CATEGORY_NAMES = { hora_silenciosa: 'Hora Silenciosa', discipulado: 'Disipulado', versiculos: 'Memorización', lecciones: 'Lecciones', todas: 'Todas las Categorías' };
 
   let currentCategory = '';
   let state = {
@@ -256,7 +256,6 @@
       if (q.leccion_num) html += tag('lecnum', '📘', `Lección ${q.leccion_num}`);
       if (q.leccion_titulo) html += tag('leccion', '📝', q.leccion_titulo);
     } else if (srcCat === 'versiculos') {
-      if (q.referencia) html += tag('ref', '📖', q.referencia);
       if (q.leccion) html += tag('leccion', '📝', q.leccion);
     }
 
