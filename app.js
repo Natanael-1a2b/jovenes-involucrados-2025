@@ -659,6 +659,8 @@
   $('btn-home').addEventListener('click', goHome);
   
   $('btn-repaso').addEventListener('click', () => {
+    const list = getRepasarErrores();
+    if (list.length === 0) return;
     vibrate(20);
     initRepaso();
     $('repaso-search').value = '';
