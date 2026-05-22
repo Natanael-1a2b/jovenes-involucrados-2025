@@ -45,11 +45,24 @@
 
   function initCategories() {
     updateStreak();
+    
+    const repasarList = getRepasarErrores();
+    $('count-repasar-errores').textContent = `${repasarList.length} preguntas`;
+    if (repasarList.length > 0) {
+      QUESTIONS['repasar_errores'] = repasarList;
+      updateProgressUI('repasar_errores', repasarList.length);
+    } else {
+      delete QUESTIONS['repasar_errores'];
+      const progEl = $('prog-repasar-errores');
+      if (progEl) progEl.style.width = '0%';
+    }
+
     let totalAll = 0;
     Object.keys(QUESTIONS).forEach(k => {
+      if (k === 'repasar_errores') return;
       const count = QUESTIONS[k].length;
       totalAll += count;
-      const elCount = $('count-' + k);
+      const elCount = $('count-' + k.replace('_', '-'));
       if (elCount) elCount.textContent = count + ' preguntas';
       updateProgressUI(k, count);
     });
@@ -105,24 +118,73 @@
   }
 
   function saveProgress() {
-    if (!currentCategory) return;
+    if (!currentCategory || currentCategory === 'repasar_errores') return;
     localStorage.setItem('ji2026_state_' + currentCategory, JSON.stringify(state));
     updateProgressUI(currentCategory, state.shuffled.length);
   }
 
   function loadProgress(cat) {
+    if (cat === 'repasar_errores') return null; // Don't persist state for this dynamic category
     const saved = localStorage.getItem('ji2026_state_' + cat);
     return saved ? JSON.parse(saved) : null;
   }
 
   function clearProgress(cat) {
+    if (cat === 'repasar_errores') return;
     localStorage.removeItem('ji2026_state_' + cat);
     updateProgressUI(cat, 0);
   }
 
+  // Repasar Errores Helpers
+  function getRepasarErrores() {
+    const saved = localStorage.getItem('ji2026_repasar_errores');
+    return saved ? JSON.parse(saved) : [];
+  }
+
+  function saveToRepasarErrores(q) {
+    let list = getRepasarErrores();
+    if (!list.some(item => item.q === q.q)) {
+      list.push(q);
+      localStorage.setItem('ji2026_repasar_errores', JSON.stringify(list));
+    }
+  }
+
+  function removeFromRepasarErrores(questionText) {
+    let list = getRepasarErrores();
+    list = list.filter(item => item.q !== questionText);
+    localStorage.setItem('ji2026_repasar_errores', JSON.stringify(list));
+  }
+
+  function clearRepasarErrores() {
+    localStorage.removeItem('ji2026_repasar_errores');
+  }
+
+  function vibrate(pattern) {
+    if (navigator.vibrate) {
+      try { navigator.vibrate(pattern); } catch(e) {}
+    }
+  }
+
   function showScreen(name) {
-    Object.values(screens).forEach(s => s.classList.remove('active'));
-    screens[name].classList.add('active');
+    const update = () => {
+      Object.values(screens).forEach(s => s.classList.remove('active'));
+      screens[name].classList.add('active');
+    };
+    if (document.startViewTransition) {
+      document.startViewTransition(update);
+    } else {
+      update();
+    }
+  }
+
+  let confirmAction = null;
+  function showConfirmModal(title, text, confirmText, action) {
+    const modal = $('modal-confirm');
+    modal.querySelector('.modal-title').textContent = title;
+    modal.querySelector('.modal-text').textContent = text;
+    $('btn-modal-confirm').textContent = confirmText;
+    confirmAction = action;
+    modal.classList.remove('hidden');
   }
 
   function shuffle(arr) {
@@ -218,6 +280,14 @@
       
       showScreen('complete'); 
       clearProgress(currentCategory);
+
+      if (currentCategory === 'repasar_errores') {
+        $('btn-replay').classList.add('hidden');
+        $('btn-clear-errores').classList.remove('hidden');
+      } else {
+        $('btn-replay').classList.remove('hidden');
+        $('btn-clear-errores').classList.add('hidden');
+      }
       
       // Animate score ring
       setTimeout(() => {
@@ -239,6 +309,12 @@
     $('question-text').textContent = q.q;
     $('question-meta').innerHTML = buildMetaTags(q, currentCategory);
     $('answer-text').textContent = q.a;
+
+    if (currentCategory === 'repasar_errores') {
+      $('btn-delete-error').classList.remove('hidden');
+    } else {
+      $('btn-delete-error').classList.add('hidden');
+    }
     
     $('answer-section').classList.add('hidden');
     $('btn-reveal').classList.remove('hidden');
@@ -276,8 +352,18 @@
   }
 
   function handleScore(isCorrect) {
-    if (isCorrect) state.correctCount++;
-    else state.incorrectCount++;
+    const q = state.shuffled[state.currentIndex];
+
+    if (isCorrect) {
+      state.correctCount++;
+      vibrate(50);
+    } else {
+      state.incorrectCount++;
+      vibrate([50, 50, 50]);
+      if (currentCategory !== 'repasar_errores') {
+        saveToRepasarErrores({ ...q, _srcCat: currentCategory });
+      }
+    }
     
     state.answers.push(isCorrect);
     state.currentIndex++;
@@ -431,10 +517,14 @@
 
   // Events
   document.querySelectorAll('.category-card').forEach(btn => {
-    btn.addEventListener('click', () => startCategory(btn.dataset.category));
+    btn.addEventListener('click', () => {
+      if (btn.id === 'card-repasar-errores') startCategory('repasar_errores');
+      else startCategory(btn.dataset.category);
+    });
   });
   
   $('btn-reveal').addEventListener('click', () => {
+    vibrate(20);
     $('answer-section').classList.remove('hidden');
     $('btn-reveal').classList.add('hidden');
     $('action-score').classList.remove('hidden');
@@ -443,22 +533,69 @@
   $('btn-correct').addEventListener('click', () => handleScore(true));
   $('btn-wrong').addEventListener('click', () => handleScore(false)); 
   
-  $('btn-back').addEventListener('click', () => showScreen('categories'));
-  $('btn-restart').addEventListener('click', () => startCategory(currentCategory, true));
-  $('btn-prev').addEventListener('click', goBack);
+  $('btn-back').addEventListener('click', () => { vibrate(20); initCategories(); showScreen('categories'); });
+  $('btn-restart').addEventListener('click', () => {
+    vibrate(20);
+    showConfirmModal('¿Reiniciar Categoría?', 'Se perderá tu progreso actual y volverás a empezar desde cero.', 'Sí, reiniciar', () => {
+      startCategory(currentCategory, true);
+    });
+  });
+
+  $('btn-modal-cancel').addEventListener('click', () => {
+    vibrate(20);
+    $('modal-confirm').classList.add('hidden');
+  });
+
+  $('btn-modal-confirm').addEventListener('click', () => {
+    vibrate(20);
+    $('modal-confirm').classList.add('hidden');
+    if (confirmAction) confirmAction();
+  });
+  $('btn-prev').addEventListener('click', () => { vibrate(20); goBack(); });
   $('btn-next-review').addEventListener('click', () => {
+    vibrate(20);
     state.currentIndex++;
     showQuestion();
   });
-  $('btn-replay').addEventListener('click', () => startCategory(currentCategory, true));
-  $('btn-home').addEventListener('click', () => { initCategories(); showScreen('categories'); });
+  $('btn-replay').addEventListener('click', () => { vibrate(20); startCategory(currentCategory, true); });
+  $('btn-clear-errores').addEventListener('click', () => {
+    vibrate(20);
+    showConfirmModal('¿Vaciar Lista?', 'Se eliminarán todas las preguntas que has guardado para repasar. Esta acción no se puede deshacer.', 'Sí, vaciar lista', () => {
+      clearRepasarErrores();
+      initCategories();
+      showScreen('categories');
+    });
+  });
+  $('btn-delete-error').addEventListener('click', () => {
+    vibrate(20);
+    showConfirmModal('¿Eliminar pregunta?', 'Esta pregunta se quitará de tu lista de repaso.', 'Sí, eliminar', () => {
+      const q = state.shuffled[state.currentIndex];
+      removeFromRepasarErrores(q.q);
+      
+      state.shuffled.splice(state.currentIndex, 1);
+      state.answers.splice(state.currentIndex, 1);
+      $('quiz-total').textContent = state.shuffled.length;
+      
+      if (state.shuffled.length === 0) {
+        initCategories();
+        showScreen('categories');
+      } else {
+        if (state.currentIndex >= state.shuffled.length) {
+           state.currentIndex = state.shuffled.length - 1;
+        }
+        showQuestion();
+      }
+    });
+  });
+  $('btn-home').addEventListener('click', () => { vibrate(20); initCategories(); showScreen('categories'); });
   
   $('btn-repaso').addEventListener('click', () => {
+    vibrate(20);
     initRepaso();
     $('repaso-search').value = '';
     showScreen('repaso');
   });
-  $('btn-back-repaso').addEventListener('click', () => showScreen('categories'));
+  $('btn-back-repaso').addEventListener('click', () => { vibrate(20); showScreen('categories'); });
 
   // Keyboard shortcuts
   document.addEventListener('keydown', (e) => {
