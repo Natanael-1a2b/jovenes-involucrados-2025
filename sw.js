@@ -1,4 +1,4 @@
-const CACHE_NAME = 'ji2026-v24';
+const CACHE_NAME = 'ji2026-v25';
 const STATIC_ASSETS = [
   '/',
   './index.html',
@@ -16,7 +16,12 @@ self.addEventListener('install', (event) => {
   event.waitUntil(
     caches.open(CACHE_NAME)
       .then((cache) => {
-        const requests = STATIC_ASSETS.map(url => new Request(url, { cache: 'no-cache' }));
+        // Añadir ?v=timestamp a las URLs para evitar caché HTTP del navegador
+        const timestamp = new Date().getTime();
+        const requests = STATIC_ASSETS.map(url => {
+          const separator = url.includes('?') ? '&' : '?';
+          return new Request(url + separator + 'v=' + timestamp);
+        });
         return cache.addAll(requests);
       })
       .then(() => self.skipWaiting())
@@ -36,8 +41,9 @@ self.addEventListener('activate', (event) => {
 self.addEventListener('fetch', (event) => {
   if (event.request.method !== 'GET') return;
   
+  // ignoreSearch permite que 'index.html?v=timestamp' haga match con 'index.html'
   event.respondWith(
-    caches.match(event.request)
+    caches.match(event.request, { ignoreSearch: true })
       .then((cached) => {
         if (cached) return cached;
         return fetch(event.request).then((response) => {
