@@ -606,19 +606,61 @@
       } else if (e.code === 'Space' && !$('btn-next-review').classList.contains('hidden')) {
         e.preventDefault();
         $('btn-next-review').click();
+      } else if (e.code === 'ArrowRight' && !$('btn-reveal').classList.contains('hidden')) {
+        $('btn-reveal').click();
       } else if (e.code === 'ArrowRight' && !$('btn-next-review').classList.contains('hidden')) {
         $('btn-next-review').click();
       } else if (e.code === 'ArrowRight' && !$('action-score').classList.contains('hidden')) {
         $('btn-correct').click();
-      } else if (e.code === 'ArrowDown' && !$('action-score').classList.contains('hidden')) {
+      } else if (e.code === 'ArrowLeft' && !$('action-score').classList.contains('hidden')) {
         $('btn-wrong').click();
-      } else if (e.code === 'ArrowLeft' && state.currentIndex > 0) {
+      } else if (e.code === 'ArrowLeft' && state.currentIndex > 0 && $('action-score').classList.contains('hidden')) {
+        vibrate(20);
         goBack();
       } else if (e.code === 'Escape') {
         $('btn-back').click();
       }
     }
   });
+
+  // Touch Swipe navigation
+  let touchStartX = 0;
+  let touchEndX = 0;
+
+  screens.quiz.addEventListener('touchstart', e => {
+    touchStartX = e.changedTouches[0].screenX;
+  }, { passive: true });
+
+  screens.quiz.addEventListener('touchend', e => {
+    touchEndX = e.changedTouches[0].screenX;
+    handleSwipe();
+  }, { passive: true });
+
+  function handleSwipe() {
+    const swipeThreshold = 50;
+    const diff = touchEndX - touchStartX;
+
+    if (Math.abs(diff) < swipeThreshold) return; // not a significant swipe
+
+    if (diff > 0) {
+      // Swiped Right (pulling from left) -> Go Back or "Lo sabía"
+      if (!$('action-score').classList.contains('hidden')) {
+        $('btn-correct').click();
+      } else if (state.currentIndex > 0 && $('action-score').classList.contains('hidden')) {
+        vibrate(20);
+        goBack();
+      }
+    } else {
+      // Swiped Left (pulling from right) -> Reveal, Next, or "No lo sabía"
+      if (!$('btn-reveal').classList.contains('hidden')) {
+        $('btn-reveal').click();
+      } else if (!$('btn-next-review').classList.contains('hidden')) {
+        $('btn-next-review').click();
+      } else if (!$('action-score').classList.contains('hidden')) {
+        $('btn-wrong').click();
+      }
+    }
+  }
 
   // Init
   initCategories();
