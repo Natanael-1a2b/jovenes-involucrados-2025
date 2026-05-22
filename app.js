@@ -407,7 +407,7 @@
   });
   
   $('btn-correct').addEventListener('click', () => handleScore(true));
-  $('btn-wrong').addEventListener('click', () => handleScore(false));
+  $('btn-wrong').addEventListener('click', () => handleScore(false)); 
   
   $('btn-back').addEventListener('click', () => showScreen('categories'));
   $('btn-restart').addEventListener('click', () => startCategory(currentCategory, true));
@@ -439,4 +439,6 @@
 
   // Init
   initCategories();
+  const footerYearEl = $('footer-year');
+  if (footerYearEl) footerYearEl.textContent = new Date().getFullYear();
 })();
