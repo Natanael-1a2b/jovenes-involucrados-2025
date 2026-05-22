@@ -1,6 +1,6 @@
 # Jóvenes Involucrados 2026 - App de Preguntas y Respuestas
 
-![Banner](https://img.shields.io/badge/Estado-Producci%C3%B3n-success?style=for-the-badge) ![Versión](https://img.shields.io/badge/Versi%C3%B3n-1.0.0-blue?style=for-the-badge) ![PWA](https://img.shields.io/badge/PWA-Ready-f59e0b?style=for-the-badge)
+![Banner](https://img.shields.io/badge/Estado-Producci%C3%B3n-success?style=for-the-badge) ![Versión](https://img.shields.io/badge/Versi%C3%B3n-2.0.0-blue?style=for-the-badge) ![PWA](https://img.shields.io/badge/PWA-Ready-f59e0b?style=for-the-badge)
 
 Una **Progressive Web App (PWA)** diseñada para que los jóvenes de la Iglesia Bautista Cristo Jesús (IBCJ) puedan estudiar y repasar las preguntas del retiro "Jóvenes Involucrados 2026" de forma interactiva y desde cualquier dispositivo.
 
@@ -8,7 +8,8 @@ Una **Progressive Web App (PWA)** diseñada para que los jóvenes de la Iglesia 
 
 *   **100% Offline (PWA):** Una vez que abres la página por primera vez, puedes desconectarte de internet o instalarla en tu celular/computadora y funcionará perfectamente sin consumir datos gracias al Service Worker.
 *   **Modo de Autoevaluación:** Responde mentalmente las preguntas, verifica la respuesta correcta y marca si la sabías ("Lo sabía" / "No lo sabía").
-*   **Modo Repaso y Búsqueda:** Una pantalla dedicada para leer todas las 152 preguntas de corrido, con un buscador en tiempo real para encontrar rápidamente por palabras clave o lección.
+*   **Algoritmo de Errores (Repaso Inteligente):** Las preguntas que marques como "No lo sabía" se enviarán automáticamente a una categoría especial llamada **Preguntas para Repasar**, manteniendo su categoría original para que puedas enfocarte en tus puntos débiles.
+*   **Modo Listado y Búsqueda:** Una pantalla dedicada para leer todas las 152 preguntas de corrido, con un buscador en tiempo real para encontrar rápidamente por palabras clave o lección, separado por pestañas temáticas.
 *   **Guardado Automático de Progreso:** La aplicación guarda tu avance localmente. Puedes cerrar la app y al volver retomarás exactamente en la pregunta donde te quedaste.
 *   **Sistema de Rachas (Streaks) 🔥:** Registra cuántos días consecutivos has entrado a estudiar para mantenerte motivado.
 *   **Feedback Visual Animado:** Anillo circular de puntaje al completar categorías y lluvia de confetti animado al terminar el repaso de una sección.
@@ -18,12 +19,12 @@ Una **Progressive Web App (PWA)** diseñada para que los jóvenes de la Iglesia 
 La base de datos contiene un total de 152 preguntas divididas en:
 *   📖 **Hora Silenciosa** (28 preguntas)
 *   ✝️ **Disipulado** (50 preguntas)
-*   📜 **Versículos** (14 preguntas)
+*   📜 **Memorización (Versículos)** (14 preguntas)
 *   📚 **Lecciones** (60 preguntas)
 
 ## 🛠️ Tecnologías Usadas
 
-El proyecto está construido 100% con tecnologías web estándar (Vanilla Web Stack) enfocándose en un alto rendimiento y ligereza, sin frameworks pesados:
+El proyecto está construido 100% con tecnologías web estándar (Vanilla Web Stack) enfocándose en un alto rendimiento y ligereza, con una estética **Premium Glassmorphism**, sin usar frameworks pesados:
 *   **HTML5** (Semántico)
 *   **CSS3** (Variables nativas, animaciones `@keyframes`, diseño Glassmorphism).
 *   **JavaScript (ES6+)** (Lógica de estado y manipulación del DOM).

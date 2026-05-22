@@ -1,7 +1,7 @@
 (() => {
   const $ = id => document.getElementById(id);
   const screens = { categories: $('screen-categories'), quiz: $('screen-quiz'), complete: $('screen-complete'), repaso: $('screen-repaso') };
-  const CATEGORY_NAMES = { hora_silenciosa: 'Hora Silenciosa', discipulado: 'Disipulado', versiculos: 'Memorización', lecciones: 'Lecciones', todas: 'Todas las Categorías' };
+  const CATEGORY_NAMES = { hora_silenciosa: 'Hora Silenciosa', discipulado: 'Disipulado', versiculos: 'Memorización', lecciones: 'Lecciones', todas: 'Todas las Categorías', repasar_errores: 'Preguntas para Repasar' };
 
   let currentCategory = '';
   let state = {
@@ -47,14 +47,14 @@
     updateStreak();
     
     const repasarList = getRepasarErrores();
-    $('count-repasar-errores').textContent = `${repasarList.length} preguntas`;
+    $('count-repasar_errores').textContent = `${repasarList.length} preguntas`;
     if (repasarList.length > 0) {
       QUESTIONS['repasar_errores'] = repasarList;
       updateProgressUI('repasar_errores', repasarList.length);
       if ($('btn-clear-repaso-home')) $('btn-clear-repaso-home').classList.remove('hidden');
     } else {
       delete QUESTIONS['repasar_errores'];
-      const progEl = $('prog-repasar-errores');
+      const progEl = $('prog-repasar_errores');
       if (progEl) progEl.style.width = '0%';
       if ($('btn-clear-repaso-home')) $('btn-clear-repaso-home').classList.add('hidden');
     }
@@ -272,7 +272,7 @@
     // Validate if saved state matches current database length
     let expectedLength = 0;
     if (cat === 'todas') {
-      Object.keys(QUESTIONS).forEach(k => { expectedLength += QUESTIONS[k].length; });
+      Object.keys(QUESTIONS).forEach(k => { if (k !== 'repasar_errores') expectedLength += QUESTIONS[k].length; });
     } else {
       expectedLength = (QUESTIONS[cat] || []).length;
     }
@@ -290,6 +290,7 @@
       let questions = [];
       if (cat === 'todas') {
         Object.keys(QUESTIONS).forEach(k => {
+          if (k === 'repasar_errores') return;
           QUESTIONS[k].forEach(q => questions.push({ ...q, _srcCat: k }));
         });
       } else {
@@ -429,11 +430,11 @@
       state.incorrectCount++;
       vibrate([50, 50, 50]);
       if (currentCategory !== 'repasar_errores') {
-        saveToRepasarErrores({ ...q, _srcCat: currentCategory });
+        saveToRepasarErrores({ ...q, _srcCat: q._srcCat || currentCategory });
       }
     }
     
-    state.answers.push(isCorrect);
+    state.answers[state.currentIndex] = isCorrect;
     state.currentIndex++;
     saveProgress();
     showQuestion();
@@ -442,6 +443,7 @@
   function goBack() {
     if (state.currentIndex <= 0) return;
     state.currentIndex--;
+    saveProgress();
     showQuestion();
   }
 
@@ -495,7 +497,7 @@
   function initRepaso() {
     allRepasoQuestions = [];
     Object.keys(QUESTIONS).forEach(k => {
-      QUESTIONS[k].forEach(q => allRepasoQuestions.push({ ...q, _srcCat: k }));
+      QUESTIONS[k].forEach(q => allRepasoQuestions.push({ ...q, _srcCat: q._srcCat || k, isRepaso: k === 'repasar_errores' }));
     });
     
     const tabsContainer = $('repaso-tabs');
@@ -566,8 +568,12 @@
     const term = $('repaso-search').value.toLowerCase();
     let filtered = allRepasoQuestions;
     
-    if (currentRepasoCategory !== 'todas') {
-      filtered = filtered.filter(q => q._srcCat === currentRepasoCategory);
+    if (currentRepasoCategory === 'repasar_errores') {
+      filtered = filtered.filter(q => q.isRepaso);
+    } else if (currentRepasoCategory !== 'todas') {
+      filtered = filtered.filter(q => q._srcCat === currentRepasoCategory && !q.isRepaso);
+    } else {
+      filtered = filtered.filter(q => !q.isRepaso);
     }
     
     if (term) {
@@ -586,7 +592,13 @@
   // Events
   document.querySelectorAll('.category-card').forEach(btn => {
     btn.addEventListener('click', () => {
-      if (btn.id === 'card-repasar-errores') startCategory('repasar_errores');
+      if (btn.id === 'card-repasar-errores') {
+        if (getRepasarErrores().length === 0) {
+          showConfirmModal('Lista Vacía', 'Aquí podrás repasar las preguntas que no te sepas. Se guardarán automáticamente cuando te equivoques en otras categorías.', 'Entendido', null);
+          return;
+        }
+        startCategory('repasar_errores');
+      }
       else startCategory(btn.dataset.category);
     });
   });
@@ -623,6 +635,7 @@
   $('btn-next-review').addEventListener('click', () => {
     vibrate(20);
     state.currentIndex++;
+    saveProgress();
     showQuestion();
   });
   $('btn-replay').addEventListener('click', () => { vibrate(20); startCategory(currentCategory, true); });
@@ -658,8 +671,6 @@
   $('btn-home').addEventListener('click', goHome);
   
   $('btn-repaso').addEventListener('click', () => {
-    const list = getRepasarErrores();
-    if (list.length === 0) return;
     vibrate(20);
     initRepaso();
     $('repaso-search').value = '';
