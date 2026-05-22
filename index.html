@@ -10,6 +10,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="manifest" href="manifest.json">
     <link rel="apple-touch-icon" href="assets/icons/icon-192.png">
+    <link rel="icon" type="image/svg+xml" href="assets/icons/icon.svg">
+    <link rel="icon" type="image/png" sizes="192x192" href="assets/icons/icon-192.png">
     <meta name="theme-color" content="#0a0a1a">
     <link rel="stylesheet" href="styles.css">
 </head>
@@ -19,7 +21,7 @@
         <div class="top-nav">
             <button id="btn-repaso" class="btn-nav">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
-                <span>Repaso</span>
+                <span>Preguntas</span>
             </button>
             <button id="btn-install" class="btn-nav btn-nav--highlight hidden">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
@@ -74,6 +76,23 @@
             </button>
         </div>
 
+        <div class="repasar-section">
+            <button class="category-card repasar-banner" data-category="repasar_errores" id="card-repasar-errores">
+                <div class="repasar-banner-left">
+                    <div class="repasar-banner-icon">🔥</div>
+                    <div class="repasar-banner-text">
+                        <div class="repasar-banner-title">Preguntas para repasar</div>
+                        <div class="repasar-banner-count" id="count-repasar-errores">0 preguntas</div>
+                    </div>
+                </div>
+                <div class="repasar-banner-arrow">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+                </div>
+                <div class="card-progress"><div class="card-progress-fill" id="prog-repasar-errores"></div></div>
+                <div class="card-shine"></div>
+            </button>
+        </div>
+
         <!-- Footer -->
         <footer class="app-footer">
             <div class="footer-inner">
@@ -113,8 +132,27 @@
         </footer>
     </div>
 
+    <!-- Modal Confirmación -->
+    <div id="modal-confirm" class="modal-overlay hidden">
+        <div class="modal-card">
+            <div class="modal-icon">⚠️</div>
+            <h3 class="modal-title">¿Reiniciar Categoría?</h3>
+            <p class="modal-text">Se perderá tu progreso actual y volverás a empezar desde cero.</p>
+            <div class="modal-actions">
+                <button id="btn-modal-cancel" class="btn-secondary">Cancelar</button>
+                <button id="btn-modal-confirm" class="btn-primary" style="background: rgba(239,68,68,.1); color: #f87171; border: 1px solid rgba(239,68,68,.3); box-shadow: none;">Sí, reiniciar</button>
+            </div>
+        </div>
+    </div>
+
     <!-- Quiz Screen -->
-    <div id="screen-quiz" class="screen">
+    <div id="screen-quiz" class="screen quiz-screen">
+        <button id="btn-prev" class="btn-prev hidden" aria-label="Pregunta anterior">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg>
+        </button>
+        <button id="btn-next-review" class="btn-next-float hidden" aria-label="Siguiente pregunta">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+        </button>
         <div class="quiz-header">
             <button id="btn-back" class="btn-icon" aria-label="Volver">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg>
@@ -123,6 +161,9 @@
                 <h2 id="quiz-category-title" class="quiz-cat-title"></h2>
                 <div class="progress-text"><span id="quiz-current">1</span> / <span id="quiz-total">0</span></div>
             </div>
+            <button id="btn-delete-error" class="btn-icon hidden" aria-label="Eliminar de la lista" title="Eliminar de la lista">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/></svg>
+            </button>
             <button id="btn-restart" class="btn-icon" aria-label="Reiniciar" title="Reiniciar">
                 <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
             </button>
@@ -142,6 +183,10 @@
                     <div class="answer-label">Respuesta</div>
                     <p class="answer-text" id="answer-text"></p>
                 </div>
+            </div>
+            <div id="review-result" class="review-result hidden">
+                <span id="review-result-icon"></span>
+                <span id="review-result-text"></span>
             </div>
         </div>
 
@@ -182,6 +227,7 @@
             <p class="complete-text">Has respondido todas las preguntas de esta categoría.</p>
             <div class="complete-actions">
                 <button id="btn-replay" class="btn-primary">Repetir Categoría</button>
+                <button id="btn-clear-errores" class="btn-primary hidden" style="background: rgba(239,68,68,.1); color: #f87171; border: 1px solid rgba(239,68,68,.3); box-shadow: none;">Vaciar Lista</button>
                 <button id="btn-home" class="btn-secondary">Elegir Otra Categoría</button>
             </div>
         </div>
