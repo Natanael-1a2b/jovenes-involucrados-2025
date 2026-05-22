@@ -51,10 +51,12 @@
     if (repasarList.length > 0) {
       QUESTIONS['repasar_errores'] = repasarList;
       updateProgressUI('repasar_errores', repasarList.length);
+      if ($('btn-clear-repaso-home')) $('btn-clear-repaso-home').classList.remove('hidden');
     } else {
       delete QUESTIONS['repasar_errores'];
       const progEl = $('prog-repasar-errores');
       if (progEl) progEl.style.width = '0%';
+      if ($('btn-clear-repaso-home')) $('btn-clear-repaso-home').classList.add('hidden');
     }
 
     let totalAll = 0;
@@ -621,6 +623,16 @@
     showScreen('repaso');
   });
   $('btn-back-repaso').addEventListener('click', () => { vibrate(20); showScreen('categories'); });
+
+  if ($('btn-clear-repaso-home')) {
+    $('btn-clear-repaso-home').addEventListener('click', () => {
+      vibrate(20);
+      showConfirmModal('¿Vaciar Lista?', 'Se eliminarán todas las preguntas que has guardado para repasar. Esta acción no se puede deshacer.', 'Sí, vaciar lista', () => {
+        clearRepasarErrores();
+        initCategories();
+      });
+    });
+  }
 
   // Keyboard shortcuts
   document.addEventListener('keydown', (e) => {
