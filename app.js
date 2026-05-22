@@ -126,9 +126,16 @@
   }
 
   function loadProgress(cat) {
-    if (cat === 'repasar_errores') return null; // Don't persist state for this dynamic category
+    if (cat === 'repasar_errores') return null;
     const saved = localStorage.getItem('ji2026_state_' + cat);
-    return saved ? JSON.parse(saved) : null;
+    if (!saved) return null;
+    try {
+      return JSON.parse(saved);
+    } catch (e) {
+      console.warn('Error parsing state for', cat, e);
+      clearProgress(cat);
+      return null;
+    }
   }
 
   function clearProgress(cat) {
@@ -140,7 +147,14 @@
   // Repasar Errores Helpers
   function getRepasarErrores() {
     const saved = localStorage.getItem('ji2026_repasar_errores');
-    return saved ? JSON.parse(saved) : [];
+    if (!saved) return [];
+    try {
+      return JSON.parse(saved);
+    } catch (e) {
+      console.warn('Error parsing repasar_errores', e);
+      clearRepasarErrores();
+      return [];
+    }
   }
 
   function saveToRepasarErrores(q) {
